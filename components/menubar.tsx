@@ -1,16 +1,21 @@
-import
+import React from "react";
+import {Button, MenuItem, Menu} from "@mui/material";
+import styles from "./menubar.module.css";
+
 export default function MenuBar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
       const open = Boolean(anchorEl);
       const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
       };
-      const handleClose = () => {
+      const handleClose = (link: string | undefined) => {
         setAnchorEl(null);
+        if(link !== undefined)
+          window.document.location = link;
       };
 
       return (
-        <div>
+        <div className="menu">
           <Button
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
@@ -29,9 +34,8 @@ export default function MenuBar() {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={() => handleClose("/")}>Home</MenuItem>
+            <MenuItem onClick={() => handleClose("/time-card")}>Time Card</MenuItem>
           </Menu>
         </div>
       );
