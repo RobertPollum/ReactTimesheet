@@ -1,6 +1,5 @@
+import { InputLabel, MenuItem } from "@mui/material";
 import Select, { SelectProps } from "@mui/material/Select";
-import Option from "@mui/material/Select";
-import { useState } from "react";
 
 export interface DropdownOption {
     name: string,
@@ -9,27 +8,36 @@ export interface DropdownOption {
 
 interface DropdownProps extends SelectProps{
     options: string[] | number[] | DropdownOption[],
-    emptyOption: boolean
+    emptyoption?: boolean
 }
 
 export default function Dropdown(props: DropdownProps) {
-    const [dropdownOptions, setDropdownOptions] = useState<string[] | number[] | DropdownOption[]>(props.options)
+    let selectProps = props as SelectProps;
     return (
-        <Select
-            {...props}
-            >
-                {props.emptyOption? (<Option value=""></Option>) : null }
-                {
-                    dropdownOptions.map((option) => {
-                        let isDropdownOption = typeof option !== "number" && typeof option !== "string";
-                        if(isDropdownOption) {
-                            let optionAsDropdownOption = option as DropdownOption;
-                            return (<Option value={optionAsDropdownOption.value}>{optionAsDropdownOption.name}</Option>)
-                        }
-                        let optionAsSingleValue = option as number | string
-                        return (<Option value={optionAsSingleValue}>{optionAsSingleValue}</Option>)
-                    })   
-                }
-        </Select>
+        <>
+            {/* <InputLabel id={props.id + '-label'}>{props.label ?? ""}</InputLabel> */}
+            <Select
+                {...selectProps}
+                labelId= {props.id + '-label'}
+                // label={props.label}
+                // id={props.id}
+                autoWidth={true}
+                // value={props.value}
+                // onChange={props.onChange}
+                >
+                    {props.emptyoption?? false ? (<MenuItem key="" value="">{props.label}</MenuItem>) : null }
+                    {
+                        props.options.map((option) => {
+                            let isDropdownOption = typeof option !== "number" && typeof option !== "string";
+                            if(isDropdownOption) {
+                                let optionAsDropdownOption = option as DropdownOption;
+                                return (<MenuItem key={optionAsDropdownOption.value} value={optionAsDropdownOption.value}>{optionAsDropdownOption.name}</MenuItem>)
+                            }
+                            let optionAsSingleValue = option as number | string;
+                            return (<MenuItem key={optionAsSingleValue} value={optionAsSingleValue}>{optionAsSingleValue}</MenuItem>)
+                        })   
+                    }
+            </Select>
+            </>
     )
 }
