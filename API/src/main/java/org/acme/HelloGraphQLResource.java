@@ -1,5 +1,7 @@
 package org.acme;
 
+import java.util.List;
+
 import org.eclipse.microprofile.graphql.DefaultValue;
 import org.eclipse.microprofile.graphql.Description;
 import org.eclipse.microprofile.graphql.GraphQLApi;
@@ -12,5 +14,11 @@ public class HelloGraphQLResource {
     @Description("Say hello")
     public String sayHello(@DefaultValue("World") String name) {
         return "Hello " + name;
+    }
+
+    @Query
+    @Description("MyEntity")
+    public List<MyEntity> getMyEntity() {
+        return MyEntity.findAll().list();
     }
 }
